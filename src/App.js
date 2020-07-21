@@ -1,38 +1,15 @@
-import React, { useState } from 'react';
-import useInput from "./useInput"
-
-const content = [
-  {
-    tab: "Section 1",
-    content: "I'm the content of the Section 1"
-  },
-  {
-    tab: "Section 2",
-    content: "I'm the content of the Section 2"
-  }
-]
-
-const useTabs = (initialTab, allTabs) => {
-  // if (!allTabs || !Array.isArray(allTabs)) {
-  //   return ;
-  // }
-  const [currentIndex, setCurrentIndex] = useState(initialTab);
-  return {
-    currentItem: allTabs[currentIndex],
-    changeItem: setCurrentIndex
-  }
-}
+import React, { useState, useEffect, useRef } from 'react';
+import useAxios from "./useAxios"
 
 function App() {
-  const { currentItem, changeItem } = useTabs(0, content)
+  const { loading, data, error, refetch } = useAxios({ url: "https://yts.am/api/v2/list_movies.json" })
   return (
    <div className="App">
       <h1>Hello World</h1>
-      { content.map((section, index) => <button onClick={() => changeItem(index)}>{ section.tab }</button>) }
-      <div>
-        { currentItem.content }
-      </div>
-   </div> 
+      <h1>{ data && data.status}</h1>
+      <h2>{ loading && "Loading" }</h2>
+      <button onClick={ refetch }>Refetch</button>
+    </div>
   )
 }
 
